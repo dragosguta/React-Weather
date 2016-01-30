@@ -48,10 +48,10 @@ var bundler = watchify(browserify({
 // Bundle Tasks
 function bundle() {
   return bundler
-    .bundle()
-    .on('error', notify)
-    .pipe(source('main.js'))
-    .pipe(gulp.dest('./'))
+  .bundle()
+  .on('error', notify)
+  .pipe(source('main.js'))
+  .pipe(gulp.dest('./'))
 }
 bundler.on('update', bundle);
 
@@ -63,28 +63,28 @@ gulp.task('build', function() {
 // Compile the SASS files from main.scss
 gulp.task('sass', function() {
   gulp.src('./sass/main.scss')
-    .pipe(sass().on('error', sass.logError))
-    .pipe(concat('style.css'))
-    .pipe(gulp.dest('./'));
+  .pipe(sass().on('error', sass.logError))
+  .pipe(concat('style.css'))
+  .pipe(gulp.dest('./'));
 });
 
-// Reload server to refresh code
+// Live reload server settings
 gulp.task('serve', function(done) {
   gulp.src('')
-    .pipe(server({
-      livereload: {
-        enable: true,
-        filter: function(filePath, cb) {
-          if(/main.js/.test(filePath)) {
-            cb(true)
-          }
-          else if(/style.css/.test(filePath)) {
-            cb(true)
-          }
+  .pipe(server({
+    livereload: {
+      enable: true,
+      filter: function(filePath, cb) {
+        if (/main.js/.test(filePath)) {
+          cb(true)
         }
-      },
-      open: true
-    }));
+        else if (/style.css/.test(filePath)) {
+          cb(true)
+        }
+      }
+    },
+    open: true
+  }));
 });
 
 // Watch for changes in the SASS files
@@ -92,5 +92,5 @@ gulp.task('watch', function() {
   gulp.watch('./sass/**/*.scss', ['sass']);
 });
 
-// Run tasks in order
+// Run tasks in a specific order
 gulp.task('default', ['build', 'serve', 'sass', 'watch']);
